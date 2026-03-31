@@ -21,3 +21,9 @@ With the YAML plugin installed, you can associate the schema with `app.yaml` and
       "https://raw.githubusercontent.com/andrewsomething/app-platform-json-schema/main/app_spec.json": ["app.yaml", "app.yml"],
     },
 ```
+
+You may also associate the schema with individual files by adding the following line to each file:
+
+```yaml
+# yaml-language-server: $schema=https://raw.githubusercontent.com/andrewsomething/app-platform-json-schema/main/app_spec.json
+```
