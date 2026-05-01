@@ -421,50 +421,89 @@
                     ]
                   }
                 ]
-              },
-              "autoscaling": {
-                "description": "Configuration for automatically scaling this component based on metrics.",
-                "type": "object",
-                "properties": {
-                  "min_instance_count": {
-                    "description": "The minimum amount of instances for this component. Must be less than max_instance_count.",
-                    "type": "integer",
-                    "format": "uint32",
-                    "minimum": 1
-                  },
-                  "max_instance_count": {
-                    "description": "The maximum amount of instances for this component. Must be more than min_instance_count.",
-                    "type": "integer",
-                    "format": "uint32",
-                    "minimum": 1
-                  },
-                  "metrics": {
-                    "description": "The metrics that the component is scaled on.",
-                    "type": "object",
-                    "properties": {
-                      "cpu": {
-                        "description": "Settings for scaling the component based on CPU utilization.",
-                        "type": "object",
-                        "properties": {
-                          "percent": {
-                            "description": "The average target CPU utilization for the component.",
-                            "type": "integer",
-                            "format": "uint32",
-                            "minimum": 1,
-                            "maximum": 100,
-                            "default": 80
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
               }
             }
           },
           {
             "type": "object",
             "properties": {
+              "autoscaling": {
+                "allOf": [
+                  {
+                    "description": "Configuration for automatically scaling this component based on metrics.",
+                    "type": "object",
+                    "properties": {
+                      "min_instance_count": {
+                        "description": "The minimum amount of instances for this component.",
+                        "type": "integer",
+                        "format": "uint32",
+                        "minimum": 1
+                      },
+                      "max_instance_count": {
+                        "description": "The maximum amount of instances for this component. Maximum 250. Consider using a larger instance size if your application requires more than 250 instances.",
+                        "type": "integer",
+                        "format": "uint32",
+                        "minimum": 1,
+                        "maximum": 250
+                      },
+                      "metrics": {
+                        "description": "The metrics that the component is scaled on.",
+                        "type": "object",
+                        "properties": {
+                          "cpu": {
+                            "description": "Settings for scaling the component based on CPU utilization.",
+                            "type": "object",
+                            "properties": {
+                              "percent": {
+                                "description": "The average target CPU utilization for the component.",
+                                "type": "integer",
+                                "format": "uint32",
+                                "minimum": 1,
+                                "maximum": 100,
+                                "default": 80
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "metrics": {
+                        "type": "object",
+                        "properties": {
+                          "requests_per_second": {
+                            "description": "Settings for scaling the component based on requests per second.",
+                            "type": "object",
+                            "properties": {
+                              "per_instance": {
+                                "description": "The target number of requests per second per instance for the component.",
+                                "type": "integer",
+                                "format": "uint32",
+                                "minimum": 1
+                              }
+                            }
+                          },
+                          "request_duration": {
+                            "description": "Settings for scaling the component based on request duration.",
+                            "type": "object",
+                            "properties": {
+                              "p95_milliseconds": {
+                                "description": "The p95 target request duration in milliseconds for the component.",
+                                "type": "integer",
+                                "format": "uint32",
+                                "minimum": 1
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
               "cors": {
                 "allOf": [
                   {
@@ -1428,44 +1467,6 @@
                     ]
                   }
                 ]
-              },
-              "autoscaling": {
-                "description": "Configuration for automatically scaling this component based on metrics.",
-                "type": "object",
-                "properties": {
-                  "min_instance_count": {
-                    "description": "The minimum amount of instances for this component. Must be less than max_instance_count.",
-                    "type": "integer",
-                    "format": "uint32",
-                    "minimum": 1
-                  },
-                  "max_instance_count": {
-                    "description": "The maximum amount of instances for this component. Must be more than min_instance_count.",
-                    "type": "integer",
-                    "format": "uint32",
-                    "minimum": 1
-                  },
-                  "metrics": {
-                    "description": "The metrics that the component is scaled on.",
-                    "type": "object",
-                    "properties": {
-                      "cpu": {
-                        "description": "Settings for scaling the component based on CPU utilization.",
-                        "type": "object",
-                        "properties": {
-                          "percent": {
-                            "description": "The average target CPU utilization for the component.",
-                            "type": "integer",
-                            "format": "uint32",
-                            "minimum": 1,
-                            "maximum": 100,
-                            "default": 80
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
               }
             }
           },
@@ -1830,22 +1831,28 @@
                     ]
                   }
                 ]
-              },
+              }
+            }
+          },
+          {
+            "type": "object",
+            "properties": {
               "autoscaling": {
                 "description": "Configuration for automatically scaling this component based on metrics.",
                 "type": "object",
                 "properties": {
                   "min_instance_count": {
-                    "description": "The minimum amount of instances for this component. Must be less than max_instance_count.",
+                    "description": "The minimum amount of instances for this component.",
                     "type": "integer",
                     "format": "uint32",
                     "minimum": 1
                   },
                   "max_instance_count": {
-                    "description": "The maximum amount of instances for this component. Must be more than min_instance_count.",
+                    "description": "The maximum amount of instances for this component. Maximum 250. Consider using a larger instance size if your application requires more than 250 instances.",
                     "type": "integer",
                     "format": "uint32",
-                    "minimum": 1
+                    "minimum": 1,
+                    "maximum": 250
                   },
                   "metrics": {
                     "description": "The metrics that the component is scaled on.",
@@ -1868,12 +1875,7 @@
                     }
                   }
                 }
-              }
-            }
-          },
-          {
-            "type": "object",
-            "properties": {
+              },
               "termination": {
                 "type": "object",
                 "properties": {
@@ -2071,7 +2073,9 @@
                     "FUNCTIONS_ERROR_RATE_PER_MINUTE",
                     "FUNCTIONS_AVERAGE_WAIT_TIME_MS",
                     "FUNCTIONS_ERROR_COUNT",
-                    "FUNCTIONS_GB_RATE_PER_SECOND"
+                    "FUNCTIONS_GB_RATE_PER_SECOND",
+                    "REQUESTS_PER_SECOND",
+                    "REQUEST_DURATION_P95_MS"
                   ],
                   "type": "string"
                 },
