@@ -1,0 +1,10 @@
+{
+  "title": "DigitalOcean App Platform Deploy Button Spec",
+  "type": "object",
+  "description": "The application specification, or app spec, is a YAML manifest that declaratively states everything about your App Platform app, including each resource and all of your app’s environment variables and configuration variables.",
+  "properties": {
+    "spec": {
+      "$ref": "app_spec.json"
+    }
+  }
+}
